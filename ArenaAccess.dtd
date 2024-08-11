@@ -1,0 +1,44 @@
+<!ELEMENT ArenaAccess (SportsComplex, Facilities, Equipment, Bookings, Customers, Prices, Schedule, Payments)>
+<!ATTLIST ArenaAccess
+    xmlns CDATA #FIXED "http://www.arenaaccess.com"
+    xmlns:xsi CDATA #FIXED "http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation CDATA #IMPLIED>
+
+<!ELEMENT SportsComplex (Name, Address, Phone)>
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT Address (#PCDATA)>
+<!ELEMENT Phone (#PCDATA)>
+<!ELEMENT Facilities (Facility+)>
+<!ELEMENT Facility (Name, Type, Capacity)>
+<!ELEMENT Type (#PCDATA)>
+<!ELEMENT Capacity (#PCDATA)>
+<!ELEMENT Equipment (Item+)>
+<!ELEMENT Item (Name, AvailableQuantity, RentalPrice, Currency)>
+<!ELEMENT AvailableQuantity (#PCDATA)>
+<!ELEMENT RentalPrice (#PCDATA)>
+<!ELEMENT Currency (#PCDATA)>
+<!ELEMENT Bookings (Booking*)>
+<!ELEMENT Booking (BookingID, CustomerID, FacilityName, Date, StartTime, EndTime, EquipmentRented?)>
+<!ELEMENT BookingID (#PCDATA)>
+<!ELEMENT CustomerID (#PCDATA)>
+<!ELEMENT FacilityName (#PCDATA)>
+<!ELEMENT Date (#PCDATA)>
+<!ELEMENT StartTime (#PCDATA)>
+<!ELEMENT EndTime (#PCDATA)>
+<!ELEMENT EquipmentRented (RentedItem*)>
+<!ELEMENT RentedItem (#PCDATA)>
+<!ELEMENT Customers (Customer*)>
+<!ELEMENT Customer (CustomerID, Name, Email, MembershipLevel)>
+<!ELEMENT Email (#PCDATA)>
+<!ELEMENT MembershipLevel (#PCDATA)>
+<!ELEMENT Prices (Price*)>
+<!ELEMENT Price (FacilityName, HourlyRate, Currency)>
+<!ELEMENT HourlyRate (#PCDATA)>
+<!ELEMENT Schedule (Event*)>
+<!ELEMENT Event (Name, FacilityName, Date, StartTime, EndTime)>
+<!ELEMENT Payments (Payment*)>
+<!ELEMENT Payment (PaymentID, BookingID, Amount, Currency, PaymentMethod, PaymentStatus)>
+<!ELEMENT PaymentID (#PCDATA)>
+<!ELEMENT Amount (#PCDATA)>
+<!ELEMENT PaymentMethod (#PCDATA)>
+<!ELEMENT PaymentStatus (#PCDATA)>

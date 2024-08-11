@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Access Information</title>
+    <style>
+        body{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Arena Access Information</h1>
+
+    <h2>Equipment</h2>
+    <table id="equipment-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Available Quantity</th>
+                <th>Rental Price</th>
+                <th>Currency</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Bookings</h2>
+    <table id="bookings-table">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Customer ID</th>
+                <th>Facility Name</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Equipment Rented</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Customers</h2>
+    <table id="customers-table">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Membership Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Prices</h2>
+    <table id="prices-table">
+        <thead>
+            <tr>
+                <th>Facility Name</th>
+                <th>Hourly Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        function loadXMLDoc() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    populateTables(this);
+                }
+            };
+            xmlhttp.open("GET", "ArenaAccess.xml", true);
+            xmlhttp.send();
+        }
+
+        function populateTables(xml) {
+            var xmlDoc = xml.responseXML;
+
+            // Populate Equipment Table
+            var equipmentTable = document.getElementById("equipment-table").getElementsByTagName('tbody')[0];
+            var items = xmlDoc.getElementsByTagName("Item");
+            for (var i = 0; i < items.length; i++) {
+                var row = equipmentTable.insertRow(-1);
+                var itemData = ["Name", "AvailableQuantity", "RentalPrice", "Currency"];
+                for (var j = 0; j < itemData.length; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.textContent = items[i].getElementsByTagName(itemData[j])[0].textContent;
+                }
+            }
+
+            // Populate Bookings Table
+            var bookingsTable = document.getElementById("bookings-table").getElementsByTagName('tbody')[0];
+            var bookings = xmlDoc.getElementsByTagName("Booking");
+            for (var i = 0; i < bookings.length; i++) {
+                var row = bookingsTable.insertRow(-1);
+                var bookingData = ["BookingID", "CustomerID", "FacilityName", "Date", "StartTime", "EndTime"];
+                for (var j = 0; j < bookingData.length; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.textContent = bookings[i].getElementsByTagName(bookingData[j])[0].textContent;
+                }
+                var equipmentRented = bookings[i].getElementsByTagName("RentedItem");
+                var rentedItems = [];
+                for (var k = 0; k < equipmentRented.length; k++) {
+                    rentedItems.push(equipmentRented[k].textContent);
+                }
+                var cell = row.insertCell(-1);
+                cell.textContent = rentedItems.join(", ");
+            }
+
+            // Populate Customers Table
+            var customersTable = document.getElementById("customers-table").getElementsByTagName('tbody')[0];
+            var customers = xmlDoc.getElementsByTagName("Customer");
+            for (var i = 0; i < customers.length; i++) {
+                var row = customersTable.insertRow(-1);
+                var customerData = ["CustomerID", "Name", "Email", "MembershipLevel"];
+                for (var j = 0; j < customerData.length; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.textContent = customers[i].getElementsByTagName(customerData[j])[0].textContent;
+                }
+            }
+
+            // Populate Prices Table
+            var pricesTable = document.getElementById("prices-table").getElementsByTagName('tbody')[0];
+            var prices = xmlDoc.getElementsByTagName("Price");
+            for (var i = 0; i < prices.length; i++) {
+                var row = pricesTable.insertRow(-1);
+                var priceData = ["FacilityName", "HourlyRate"];
+                for (var j = 0; j < priceData.length; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.textContent = prices[i].getElementsByTagName(priceData[j])[0].textContent;
+                }
+            }
+        }
+
+        // Load the XML file when the page is loaded
+        window.onload = loadXMLDoc;
+    </script>
+</body>
+</html>
+
